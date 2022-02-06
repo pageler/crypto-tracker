@@ -1,4 +1,9 @@
-import { LinearProgress, makeStyles, Typography } from "@material-ui/core";
+import {
+    Button,
+    LinearProgress,
+    makeStyles,
+    Typography,
+} from "@material-ui/core";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -7,12 +12,14 @@ import { SingleCoin } from "../config/api";
 import { CryptoState } from "../CryptoContext";
 import ReactHtmlParser from "react-html-parser";
 import { numberWithCommas } from "../components/banner/Carousel";
+import { doc, setDoc } from "firebase/firestore";
+import { db } from "../firebase";
 
 const CoinsPage = () => {
     const { id } = useParams(); // From: App.js Route
     const [coin, setCoin] = useState();
 
-    const { currency, symbol } = CryptoState(); // Currency and money symbol
+    const { currency, symbol, user, watchlist, setAlert } = CryptoState(); // money symbol
 
     useEffect(() => {
         const fetchCoin = async () => {
@@ -63,11 +70,12 @@ const CoinsPage = () => {
             paddingTop: 10,
             width: "100%",
             // Making it responsive:
-            [theme.breakpoints.down("md")]: {
-                display: "flex",
-                justifyContent: "space-around",
+            [theme.breakpoints.down("sm")]: {
+                flexDirection: "column",
+                alignItems: "center",
             },
-            [theme.breakpoints.up("sm")]: {
+            [theme.breakpoints.up("md")]: {
+                display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
             },
@@ -76,6 +84,56 @@ const CoinsPage = () => {
             },
         },
     }));
+
+    const inWatchlist = watchlist.includes(coin?.id); // true or false
+
+    const removeFromWatchlist = async () => {
+        const coinRef = doc(db, "watchlist", user.uid);
+
+        try {
+            await setDoc(
+                coinRef,
+                {
+                    coins: watchlist.filter((watch) => watch !== coin?.id),
+                },
+                { merge: true }
+            );
+
+            setAlert({
+                open: true,
+                message: `${coin.name} Removed from the Watchlist!`,
+                type: "success",
+            });
+        } catch (error) {
+            setAlert({
+                open: true,
+                message: error.message,
+                type: "error",
+            });
+        }
+    };
+
+    const addToWatchlist = async () => {
+        const coinRef = doc(db, "watchlist", user.uid);
+
+        try {
+            await setDoc(coinRef, {
+                coins: watchlist ? [...watchlist, coin?.id] : [coin?.id],
+            });
+
+            setAlert({
+                open: true,
+                message: `${coin.name} Added to the Watchlist!`,
+                type: "success",
+            });
+        } catch (error) {
+            setAlert({
+                open: true,
+                message: error.message,
+                type: "error",
+            });
+        }
+    };
 
     const classes = useStyles();
 
@@ -154,6 +212,28 @@ const CoinsPage = () => {
                             M
                         </Typography>
                     </span>
+
+                    {user && (
+                        <Button
+                            variant="outlined"
+                            style={{
+                                width: "100%",
+                                height: 40,
+                                backgroundColor: inWatchlist
+                                    ? "#FF0000"
+                                    : "#EEBC1D",
+                            }}
+                            onClick={
+                                inWatchlist
+                                    ? removeFromWatchlist
+                                    : addToWatchlist
+                            }
+                        >
+                            {inWatchlist
+                                ? "REMOVE FROM WATCHLIST"
+                                : "ADD TO WATCHLIST"}
+                        </Button>
+                    )}
                 </div>
             </div>
 
