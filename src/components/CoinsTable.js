@@ -88,7 +88,7 @@ const CoinsTable = () => {
                 </Typography>
 
                 <TextField
-                    label="Search Cryptocurrency by Name or Symbol..."
+                    label="Search Cryptocurrency by Name or Symbol (lower-case)..."
                     variant="outlined"
                     style={{ marginBottom: 20, width: "100%" }}
                     onChange={(e) => setSearch(e.target.value)}
