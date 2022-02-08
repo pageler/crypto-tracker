@@ -14,4 +14,4 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 * Coin List sorted by market cap that is clickable to show detailed information about each coin.
 * Pagination component at the bottom of the page.
 * Single coin detail page shows market information on the left and an interactive graph on the right.
-* Coins can be added or deleted from wathlist.
+* Coins can be added or deleted from watchlist.
