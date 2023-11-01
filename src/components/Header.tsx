@@ -53,7 +53,7 @@ export const Header = (props: HeaderProps) => {
                             className={classes.title}
                             onClick={() => navigate("/")}
                         >
-                            Crypto-Reference Home
+                            Crypto-Tracker Home
                         </Typography>
 
                         <Select
