@@ -4,6 +4,7 @@ import "./index.css";
 import App from "./App";
 import "react-alice-carousel/lib/alice-carousel.css";
 import { BrowserRouter } from "react-router-dom";
+import { CryptoContext } from "./CryptoContext";
 
 const root = ReactDOM.createRoot(
     document.getElementById("root") as HTMLElement
@@ -11,7 +12,9 @@ const root = ReactDOM.createRoot(
 root.render(
     <React.StrictMode>
         <BrowserRouter>
-            <App />
+            <CryptoContext>
+                <App />
+            </CryptoContext>
         </BrowserRouter>
     </React.StrictMode>
 );
