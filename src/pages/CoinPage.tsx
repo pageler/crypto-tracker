@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { SingleCoin } from "../components/config/api";
-import { Typography } from "@mui/material";
+import { LinearProgress, Typography } from "@mui/material";
 import HTMLReactParser from "html-react-parser";
 import { numberWithCommas } from "../components/banner/Carousel";
 import { CoinInfo } from "../components/CoinInfo";
@@ -88,6 +88,8 @@ export const CoinPage = (props: CoinPageProps) => {
     });
 
     const { classes } = useStyles();
+
+    if (!coin) return <LinearProgress style={{ backgroundColor: "gold" }} />;
 
     return (
         <div className={classes.container}>

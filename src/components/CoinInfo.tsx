@@ -6,6 +6,8 @@ import { makeStyles } from "tss-react/mui";
 import { CryptoState } from "../CryptoContext";
 import axios from "axios";
 import { HistoricalChart } from "./config/api";
+import { SelectButton } from "./SelectButton";
+import { chartDays } from "./config/data";
 
 ChartJS.register(...registerables);
 
@@ -36,6 +38,8 @@ export const CoinInfo = ({ coin }: CoinInfoProps) => {
 
         fetchHistoricData();
     }, [coin.id, days, currency]);
+
+    console.log("Prices", historicData);
 
     const darkTheme = createTheme({
         palette: {
@@ -111,6 +115,29 @@ export const CoinInfo = ({ coin }: CoinInfoProps) => {
                                 },
                             }}
                         />
+
+                        {/* Buttons */}
+                        <div
+                            style={{
+                                display: "flex",
+                                marginTop: 20,
+                                justifyContent: "space-around",
+                                width: "100%",
+                            }}
+                        >
+                            {chartDays.map((day: any) => (
+                                <SelectButton
+                                    key={day.value}
+                                    onClick={() => {
+                                        setDays(day.value);
+                                        setFlag(false);
+                                    }}
+                                    selected={day.value === days}
+                                >
+                                    {day.label}
+                                </SelectButton>
+                            ))}
+                        </div>
                     </>
                 )}
             </div>
