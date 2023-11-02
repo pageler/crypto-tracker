@@ -109,6 +109,7 @@ export const CoinPage = (props: CoinPageProps) => {
                     {HTMLReactParser(
                         String(coin?.description.en.split(". ")[0])
                     )}
+                    .
                 </Typography>
 
                 <div className={classes.marketData}>
