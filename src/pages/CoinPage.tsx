@@ -7,6 +7,7 @@ import { SingleCoin } from "../components/config/api";
 import { Typography } from "@mui/material";
 import HTMLReactParser from "html-react-parser";
 import { numberWithCommas } from "../components/banner/Carousel";
+import { CoinInfo } from "../components/CoinInfo";
 
 type CoinPageProps = {};
 
@@ -166,6 +167,9 @@ export const CoinPage = (props: CoinPageProps) => {
                     </span>
                 </div>
             </div>
+
+            {/* react-chartjs-2 */}
+            <CoinInfo coin={coin} />
         </div>
     );
 };
