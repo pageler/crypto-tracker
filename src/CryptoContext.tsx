@@ -1,10 +1,14 @@
+import axios from "axios";
 import { createContext, useContext, useEffect, useState } from "react";
+import { CoinList } from "./components/config/api";
 
 type CryptoContextProps = {
     children?: JSX.Element | JSX.Element[];
     currency?: string;
     setCurrency?: React.Dispatch<React.SetStateAction<string>>;
     symbol?: string;
+    loading?: boolean;
+    coins?: any;
 };
 
 const Crypto = createContext<CryptoContextProps>({});
@@ -12,6 +16,8 @@ const Crypto = createContext<CryptoContextProps>({});
 export const CryptoContext = ({ children }: CryptoContextProps) => {
     const [currency, setCurrency] = useState("USD");
     const [symbol, setSymbol] = useState("$");
+    const [loading, setLoading] = useState(false);
+    const [coins, setCoins] = useState([]);
 
     useEffect(() => {
         if (currency === "USD") {
@@ -23,8 +29,27 @@ export const CryptoContext = ({ children }: CryptoContextProps) => {
         }
     }, [currency]);
 
+    useEffect(() => {
+        const fetchCoinList = async () => {
+            try {
+                setLoading(true);
+                const { data } = await axios.get(CoinList(currency)); // Destructure data.
+
+                console.log("CoinsList", data);
+                setCoins(data);
+                setLoading(false);
+            } catch (error: any) {
+                console.log(error);
+            }
+        };
+
+        fetchCoinList();
+    }, [currency]);
+
     return (
-        <Crypto.Provider value={{ currency, setCurrency, symbol }}>
+        <Crypto.Provider
+            value={{ currency, setCurrency, symbol, loading, coins }}
+        >
             {children}
         </Crypto.Provider>
     );

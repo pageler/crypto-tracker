@@ -14,42 +14,21 @@ import {
     Typography,
     createTheme,
 } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { makeStyles } from "tss-react/mui";
 import { CryptoState } from "../CryptoContext";
 import { numberWithCommas } from "./banner/Carousel";
-import axios from "axios";
-import { CoinList } from "./config/api";
 
 type CoinTableProps = {};
 
 export const CoinTable = (props: CoinTableProps) => {
-    const [loading, setLoading] = useState(false);
-    const [coins, setCoins] = useState([]);
     const [search, setSearch] = useState("");
     const [page, setPage] = useState(1);
 
     const navigate = useNavigate();
 
-    const { currency, symbol } = CryptoState();
-
-    useEffect(() => {
-        const fetchCoinList = async () => {
-            try {
-                setLoading(true);
-                const { data } = await axios.get(CoinList(currency)); // Destructure data.
-
-                console.log("CoinsList", data);
-                setCoins(data);
-                setLoading(false);
-            } catch (error: any) {
-                console.log(error);
-            }
-        };
-
-        fetchCoinList();
-    }, [currency]);
+    const { symbol, loading, coins } = CryptoState();
 
     const darkTheme = createTheme({
         palette: {
