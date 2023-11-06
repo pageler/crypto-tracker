@@ -62,7 +62,7 @@ export const AuthModal = (props: AuthModalProps) => {
 
                 handleClose();
             })
-            .catch((error) => {
+            .catch((error: any) => {
                 setAlert({
                     open: true,
                     message: error.message,

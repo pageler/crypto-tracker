@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 import { makeStyles } from "tss-react/mui";
 import { CryptoState } from "../CryptoContext";
 import { AuthModal } from "./authentication/AuthModal";
+import { UserSidebar } from "./authentication/UserSidebar";
 
 type HeaderProps = {};
 
@@ -73,6 +74,8 @@ export const Header = (props: HeaderProps) => {
                             <MenuItem value={"GBP"}>GBP</MenuItem>
                             <MenuItem value={"EUR"}>EUR</MenuItem>
                         </Select>
+
+                        {user ? <UserSidebar /> : <AuthModal />}
                     </Toolbar>
                 </Container>
             </AppBar>

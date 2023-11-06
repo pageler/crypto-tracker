@@ -82,7 +82,7 @@ export const Login = ({ handleClose }: LoginProps) => {
                 style={{ backgroundColor: "#EEBC1D" }}
                 onClick={handleSubmit}
             >
-                Sign Up
+                Login
             </Button>
         </Box>
     );
