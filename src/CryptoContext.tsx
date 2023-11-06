@@ -1,6 +1,8 @@
 import axios from "axios";
 import { createContext, useContext, useEffect, useState } from "react";
 import { CoinList } from "./components/config/api";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "./firebase";
 
 type CryptoContextProps = {
     children?: JSX.Element | JSX.Element[];
@@ -9,6 +11,10 @@ type CryptoContextProps = {
     symbol?: string;
     loading?: boolean;
     coins?: any;
+    alert?: any;
+    setAlert?: any;
+    fetchCoinList?: Function;
+    user?: any;
 };
 
 const Crypto = createContext<CryptoContextProps>({});
@@ -18,6 +24,12 @@ export const CryptoContext = ({ children }: CryptoContextProps) => {
     const [symbol, setSymbol] = useState("$");
     const [loading, setLoading] = useState(false);
     const [coins, setCoins] = useState([]);
+    const [alert, setAlert] = useState({
+        open: false,
+        message: "",
+        type: "success",
+    });
+    const [user, setUser] = useState(null);
 
     useEffect(() => {
         if (currency === "USD") {
@@ -33,7 +45,7 @@ export const CryptoContext = ({ children }: CryptoContextProps) => {
         const fetchCoinList = async () => {
             try {
                 setLoading(true);
-                const { data } = await axios.get(CoinList(currency)); // Destructure data.
+                const { data } = await axios.get(CoinList(currency));
 
                 console.log("CoinsList", data);
                 setCoins(data);
@@ -46,9 +58,25 @@ export const CryptoContext = ({ children }: CryptoContextProps) => {
         fetchCoinList();
     }, [currency]);
 
+    useEffect(() => {
+        onAuthStateChanged(auth, (user: any) => {
+            if (user) setUser(user);
+            else setUser(null);
+        });
+    }, []);
+
     return (
         <Crypto.Provider
-            value={{ currency, setCurrency, symbol, loading, coins }}
+            value={{
+                currency,
+                setCurrency,
+                symbol,
+                loading,
+                coins,
+                alert,
+                setAlert,
+                user,
+            }}
         >
             {children}
         </Crypto.Provider>

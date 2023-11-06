@@ -4,6 +4,7 @@ import { Route, Routes } from "react-router-dom";
 import { Header } from "./components/Header";
 import { HomePage } from "./pages/HomePage";
 import { CoinPage } from "./pages/CoinPage";
+import { MyAlert } from "./components/MyAlert";
 
 function App() {
     const useStyles = makeStyles()(() => {
@@ -27,6 +28,8 @@ function App() {
                     <Route path="/coins/:id" element={<CoinPage />} />
                 </Routes>
             </div>
+
+            <MyAlert />
         </>
     );
 }

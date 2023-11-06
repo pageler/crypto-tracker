@@ -12,13 +12,14 @@ import {
 import { useNavigate } from "react-router-dom";
 import { makeStyles } from "tss-react/mui";
 import { CryptoState } from "../CryptoContext";
+import { AuthModal } from "./authentication/AuthModal";
 
 type HeaderProps = {};
 
 export const Header = (props: HeaderProps) => {
     const navigate = useNavigate();
 
-    const { currency, setCurrency } = CryptoState();
+    const { currency, setCurrency, user } = CryptoState();
 
     const darkTheme = createTheme({
         palette: {
