@@ -70,12 +70,12 @@ const useStyles = makeStyles()({
 });
 
 export const UserSidebar = (props: UserSidebarProps) => {
-    const [state, setState] = useState<any>({
+    const [state, setState] = useState({
         right: false,
     });
     const { user, setAlert, watchlist, coins, symbol } = CryptoState();
 
-    console.log(watchlist, coins);
+    console.log("Watchlist, coins", watchlist, coins);
 
     const toggleDrawer =
         (anchor: Anchor, open: boolean) =>
@@ -111,7 +111,7 @@ export const UserSidebar = (props: UserSidebarProps) => {
 
             setAlert({
                 open: true,
-                message: `${coin.name} Removed from the Watchlist !`,
+                message: `${coin.name} Removed from the Watch List !`,
                 type: "success",
             });
         } catch (error: any) {
@@ -127,7 +127,7 @@ export const UserSidebar = (props: UserSidebarProps) => {
 
     return (
         <div>
-            {["right"].map((anchor: any) => (
+            {(["right"] as const).map((anchor) => (
                 <Fragment key={anchor}>
                     <Avatar
                         onClick={toggleDrawer(anchor, true)}
@@ -175,7 +175,10 @@ export const UserSidebar = (props: UserSidebarProps) => {
                                     {coins.map((coin: any) => {
                                         if (watchlist.includes(coin.id))
                                             return (
-                                                <div className={classes.coin}>
+                                                <div
+                                                    key={coin.id}
+                                                    className={classes.coin}
+                                                >
                                                     <span>{coin.name}</span>
                                                     <span
                                                         style={{
@@ -205,7 +208,12 @@ export const UserSidebar = (props: UserSidebarProps) => {
                                                     </span>
                                                 </div>
                                             );
-                                        else return <></>;
+                                        else
+                                            return (
+                                                <Fragment
+                                                    key={coin.id}
+                                                ></Fragment>
+                                            );
                                     })}
                                 </div>
                             </div>
